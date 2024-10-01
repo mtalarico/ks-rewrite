@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Layout from "./Layout";
 import "./App.css";
-import logo from "./rhjb_eap_logo.png";
 
 function App() {
   const API_ENDPOINT = "http://localhost:8080";
@@ -48,102 +48,91 @@ function App() {
   };
 
   return (
-    <div id="container">
-      <div className="dualbrand">
-        <img src={logo} width="300" height="175" alt="Logo" />
-      </div>
-      <div id="content">
+    <Layout>
+      <div>
+        <h1>Welcome to JBoss!</h1>
         <div>
-          <h1>Welcome to JBoss!</h1>
-          <div>
-            <p>You have successfully deployed a Jakarta EE Enterprise Application.</p>
+          <p>You have successfully deployed a Jakarta EE Enterprise Application.</p>
+        </div>
+        <form id="reg" onSubmit={handleSubmit}>
+          <h2>Member Registration</h2>
+          <p>Enforces annotation-based constraints defined on the model class.</p>
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
+            <div className="input-container">
+              <input id="name" name="name" value={newMember.name} onChange={handleInputChange} />
+              {errors.name && <span className="validationError"> {errors.name}</span>}
+            </div>
           </div>
-          <form id="reg" onSubmit={handleSubmit}>
-            <h2>Member Registration</h2>
-            <p>Enforces annotation-based constraints defined on the model class.</p>
-            <div className="form-group">
-              <label htmlFor="name">Name:</label>
-              <div className="input-container">
-                <input id="name" name="name" value={newMember.name} onChange={handleInputChange} />
-                {errors.name && <span className="validationError"> {errors.name}</span>}
-              </div>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <div className="input-container">
+              <input id="email" name="email" value={newMember.email} onChange={handleInputChange} />
+              {errors.email && <span className="validationError"> {errors.email}</span>}
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Email:</label>
-              <div className="input-container">
-                <input id="email" name="email" value={newMember.email} onChange={handleInputChange} />
-                {errors.email && <span className="validationError"> {errors.email}</span>}
-              </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="phoneNumber">Phone #:</label>
+            <div className="input-container">
+              <input id="phoneNumber" name="phoneNumber" value={newMember.phoneNumber} onChange={handleInputChange} />
+              {errors.phoneNumber && <span className="validationError"> {errors.phoneNumber}</span>}
             </div>
-            <div className="form-group">
-              <label htmlFor="phoneNumber">Phone #:</label>
-              <div className="input-container">
-                <input id="phoneNumber" name="phoneNumber" value={newMember.phoneNumber} onChange={handleInputChange} />
-                {errors.phoneNumber && <span className="validationError"> {errors.phoneNumber}</span>}
-              </div>
-            </div>
-            <div className="form-group">
-              <button type="submit" id="registerButton">
-                Register
-              </button>
-              {submitted &&
-                !hasFieldErrors() &&
-                (errors.error ? <p> Registration unsuccessful: {errors.error}</p> : <li> Registration successful</li>)}
-            </div>
-          </form>
+          </div>
+          <div className="form-group">
+            <button type="submit" id="registerButton">
+              Register
+            </button>
+            {submitted &&
+              !hasFieldErrors() &&
+              (errors.error ? <p> Registration unsuccessful: {errors.error}</p> : <li> Registration successful</li>)}
+          </div>
+        </form>
 
-          <h2>Members</h2>
-          <div>
-            {members.length === 0 ? (
-              <em>No registered members.</em>
-            ) : (
-              <table className="simpletablestyle">
-                <thead>
-                  <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone #</th>
-                    <th>REST URL</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {members.map((member) => (
-                    <tr key={member.id}>
-                      <td>{member.id}</td>
-                      <td>{member.name}</td>
-                      <td>{member.email}</td>
-                      <td>{member.phoneNumber}</td>
-                      <td>
-                        <a href={`${API_ENDPOINT}/rest/members/${member.id}`} target="_blank" rel="noopener noreferrer">
-                          /rest/members/{member.id}
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan="5">
-                      REST URL for all members:
-                      <a href={`${API_ENDPOINT}/rest/members`} target="_blank" rel="noopener noreferrer">
-                        /rest/members
+        <h2>Members</h2>
+        <div>
+          {members.length === 0 ? (
+            <em>No registered members.</em>
+          ) : (
+            <table className="simpletablestyle">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone #</th>
+                  <th>REST URL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {members.map((member) => (
+                  <tr key={member.id}>
+                    <td>{member.id}</td>
+                    <td>{member.name}</td>
+                    <td>{member.email}</td>
+                    <td>{member.phoneNumber}</td>
+                    <td>
+                      <a href={`${API_ENDPOINT}/rest/members/${member.id}`} target="_blank" rel="noopener noreferrer">
+                        /rest/members/{member.id}
                       </a>
                     </td>
                   </tr>
-                </tfoot>
-              </table>
-            )}
-          </div>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan="5">
+                    REST URL for all members:
+                    <a href={`${API_ENDPOINT}/rest/members`} target="_blank" rel="noopener noreferrer">
+                      /rest/members
+                    </a>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          )}
         </div>
       </div>
-      <div id="footer">
-        <p>
-          This project was generated from a Maven archetype from JBoss.
-          <br />
-        </p>
-      </div>
-    </div>
+    </Layout>
   );
 }
 
