@@ -34,7 +34,6 @@ function App() {
     setSubmitted(true);
     try {
       await axios.post("/rest/members", newMember);
-      setErrors("Registration successful");
       setNewMember({ name: "", email: "", phoneNumber: "" });
       setErrors({});
       fetchMembers();
@@ -82,9 +81,7 @@ function App() {
             <button type="submit" id="registerButton">
               Register
             </button>
-            {submitted &&
-              !hasFieldErrors() &&
-              (errors.error ? <p> Registration unsuccessful: {errors.error}</p> : <li> Registration successful</li>)}
+            {submitted && !hasFieldErrors() && (errors.error ? <p> {errors.error}</p> : <li> Registered!</li>)}
           </div>
         </form>
 
